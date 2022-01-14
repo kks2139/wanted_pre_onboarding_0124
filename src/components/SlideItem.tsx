@@ -1,27 +1,37 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 /** @jsxImportSource @emotion/react */
 import {css} from '@emotion/react';
 import {ISlideItem} from '../datas/data';
 
 interface Props {
   item: ISlideItem
+  isFocus: boolean
+  width: number
+  space: number
+  onMouseDown: (event: React.MouseEvent)=> void
+  onMouseMove: (event: React.MouseEvent)=> void
+  onMouseUp: (event: React.MouseEvent)=> void
+  onMouseLeave: (event: React.MouseEvent)=> void
 }
 
-function SliderItem({item}: Props) {
+function SliderItem({item, isFocus, width, space, onMouseDown, onMouseMove, onMouseUp, onMouseLeave}: Props) {
+
   const style = css`
     position: relative;
     display: flex;
     justify-content: center;
-    padding: 0 11px;
+    padding: 0 ${space}px;
 
     img {
-      width: 1060px;
+      width: ${width}px;
       height: 300px;
       border-radius: 5px;
+      ${!isFocus ? 'filter: brightness(0.5)' : ''};
       cursor: pointer;
     }
 
     .info-box {
+      display: ${isFocus ? 'block' : 'none'};
       position: absolute;
       left: 35px;
       bottom: 30px;
@@ -29,6 +39,8 @@ function SliderItem({item}: Props) {
       height: 145px;
       border-radius: 5px;
       background-color: white;
+
+      animation: fade-in .4s;
       
       .title-box {
         border-bottom: 1px solid #e4e4e4;
@@ -41,6 +53,9 @@ function SliderItem({item}: Props) {
           padding: 6px 20px 20px 20px;
           font-size: 14px;
           color: #333333;
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
         }
       }
 
@@ -60,12 +75,28 @@ function SliderItem({item}: Props) {
           }
         }
       }
+
+      @keyframes fade-in {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
     }
   `;
 
   return (
-    <div css={style}>
-      <img src={item.url} alt={item.title}></img>
+    <div css={style} data-center={isFocus ? 'center' : ''}>
+      <img 
+        src={item.url}
+        alt={item.title}
+        draggable={false}
+        onMouseDown={onMouseDown} 
+        onMouseMove={onMouseMove}
+        onMouseLeave={onMouseLeave}
+        onMouseUp={onMouseUp}/>
       <div className='info-box'>
         <div className='title-box'>
           <div className='title'>{item.title}</div>
