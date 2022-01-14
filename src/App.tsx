@@ -9,7 +9,6 @@ function App() {
     main {
       margin-top: 50px;
       padding-top: 25px;
-      border: 1px solid red;
     }
   `;
 
