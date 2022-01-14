@@ -18,6 +18,7 @@ function SliderItem({item}: Props) {
       width: 1060px;
       height: 300px;
       border-radius: 5px;
+      cursor: pointer;
     }
 
     .info-box {
@@ -28,19 +29,36 @@ function SliderItem({item}: Props) {
       height: 145px;
       border-radius: 5px;
       background-color: white;
-      padding: 15px;
-
+      
       .title-box {
+        border-bottom: 1px solid #e4e4e4;
         .title {
-  
+          padding: 20px 20px 0 20px;
+          font-size: 20px;
+          font-weight: bold;
         }
         .subtitle {
-  
+          padding: 6px 20px 20px 20px;
+          font-size: 14px;
+          color: #333333;
         }
       }
 
       .link-box {
-
+        padding: 15px 20px;
+        a {
+          position: relative;
+          font-size: 14px;
+          color: #3264fa;
+          font-weight: bold;
+          &::after {
+            position: absolute;
+            content: '>';
+            font-weight: normal;
+            padding-left: 10px;
+            transform: scale(1, 1.5) translateY(-1px);
+          }
+        }
       }
     }
   `;
