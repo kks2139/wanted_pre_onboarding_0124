@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 /** @jsxImportSource @emotion/react */
 import {css} from '@emotion/react';
 import {ISlideItem} from '../datas/data';
+import {screen} from '../datas/style';
 
 interface Props {
   item: ISlideItem
@@ -97,6 +98,15 @@ function SliderItem({
           opacity: 1;
         }
       }
+    }
+
+    @media screen and (max-width: ${screen.wide}){
+    }
+    
+    @media screen and (max-width: ${screen.middle}){
+    }
+    
+    @media screen and (max-width: ${screen.narrow}){
     }
   `;
 

@@ -5,6 +5,7 @@ import {slideItemList as originalList} from '../datas/data';
 import SlideItem from './SlideItem';
 import { useEffect } from 'react';
 import { useRef } from 'react';
+import {screen} from '../datas/style';
 
 const IMG_WIDTH = 1060;
 const ITEM_SPACE = 11;
@@ -160,6 +161,16 @@ function Slider() {
                     right: 0;
                 }
             }
+        }
+
+        @media screen and (max-width: ${screen.wide}){
+            
+        }
+        
+        @media screen and (max-width: ${screen.middle}){
+        }
+        
+        @media screen and (max-width: ${screen.narrow}){
         }
     `;
 

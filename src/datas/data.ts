@@ -1,11 +1,12 @@
 export const menuLinks = [
-    {text: '채용', tag: ''},
-    {text: '이벤트', tag: ''},
-    {text: '직군별 연봉', tag: ''},
-    {text: '이력서', tag: ''},
-    {text: '커뮤니티', tag: 'New'},
-    {text: '프리랜서', tag: ''},
-    {text: 'AI 합격예측', tag: 'Beta'},
+    {text: '홈', tag: '', name: 'home'},
+    {text: '채용', tag: '', name: ''},
+    {text: '이벤트', tag: '', name: ''},
+    {text: '직군별 연봉', tag: '', name: ''},
+    {text: '이력서', tag: '', name: ''},
+    {text: '커뮤니티', tag: 'New', name: ''},
+    {text: '프리랜서', tag: '', name: ''},
+    {text: 'AI 합격예측', tag: 'Beta', name: ''},
 ];
 
 export interface ISlideItem {
