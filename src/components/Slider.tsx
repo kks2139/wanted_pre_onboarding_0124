@@ -22,7 +22,14 @@ function Slider() {
     const startIndex = useMemo(()=> Math.floor(cloneList.length / 2), []);
     const focusIndex = startIndex + moved;
 
-    const onMoveClick = (e: React.MouseEvent<HTMLButtonElement>)=>{
+    const resetInterval = ()=>{
+        clearInterval(timer.current);
+        timer.current = window.setInterval(()=>{
+            setMoved(pre => pre + 1);
+        }, 4000);
+    }
+
+    const onMoveButtonClick = (e: React.MouseEvent<HTMLButtonElement>)=>{
         if(!canSlide) return;
         resetInterval();
 
@@ -35,65 +42,71 @@ function Slider() {
         canSlide = false;
     }
 
-    const onTransitionEnd = ()=>{
-        if(focusIndex + originalList.length >= cloneList.length){
-            itemsRef.current!.style.transition = 'none';
-            setMoved(moved - originalList.length);
-        }
-        if(focusIndex - originalList.length < 0){
-            itemsRef.current!.style.transition = 'none';
-            setMoved(moved + originalList.length);
-        }
-        canSlide = true;
-    }
-
-    const resetInterval = ()=>{
-        clearInterval(timer.current);
-        timer.current = window.setInterval(()=>{
-            setMoved(pre => pre + 1);
-        }, 2000);
-    }
-
     const onMouseDown = (e: React.MouseEvent)=>{
         mouseDown = true;
         clearInterval(timer.current);
         prevX = e.pageX;
         prevTransform = itemsRef.current!.style.transform;
+        transitionActive(false);
     }
     
     const onMouseMove = (e: React.MouseEvent)=>{
         if(!mouseDown) return;
         const transform = itemsRef.current!.style.transform;
-        const diffX = e.pageX - prevX;
         const moveX = Number(transform.split('(')[1].split('px')[0]);
+        const diffX = e.pageX - prevX;
         const newMove = diffX + moveX;
 
         itemsRef.current!.style.transform = `translate(${newMove}px)`;
-        
-        prevX = e.pageX + 0;
-        // translate(-18394px)
+        prevX = e.pageX;
     }
     
-    const dragOver = (e: React.MouseEvent)=>{
+    const onDragOver = (e: React.MouseEvent)=>{
         if(!mouseDown) return;
         mouseDown = false;
+        transitionActive(true);
 
         const prevValue = Number(prevTransform.split('(')[1].split('px')[0]);
         const nowValue = Number(itemsRef.current!.style.transform.split('(')[1].split('px')[0]);
         const moveValue = prevValue - nowValue;
 
         if(Math.abs(moveValue) > (IMG_WIDTH / 2)){
-            setMoved(pre => {
-                return moveValue > 0 ? pre + 1 : pre - 1;
-            });
+            setMoved(pre => moveValue > 0 ? pre + 1 : pre - 1);
         }else{
             itemsRef.current!.style.transform = prevTransform;
         }
         resetInterval();
     }
+
+    const onMouseOver = (e: React.MouseEvent)=>{
+        if(mouseDown) return;
+        clearInterval(timer.current);
+    }
+    
+    const onMouseOut = (e: React.MouseEvent)=>{
+        if(mouseDown) return;
+        resetInterval();
+    }
+
+    const transitionActive = (isActive: boolean)=>{
+        if(isActive) itemsRef.current!.style.transition = SLIDE_DURATION + 'ms';
+        else itemsRef.current!.style.transition = 'none';
+    }
+
+    const onTransitionEnd = ()=>{
+        if(focusIndex + originalList.length >= cloneList.length){
+            transitionActive(false);
+            setMoved(moved - originalList.length);
+        }
+        if(focusIndex - originalList.length < 0){
+            transitionActive(false);
+            setMoved(moved + originalList.length);
+        }
+        canSlide = true;
+    }
     
     useEffect(()=>{
-        itemsRef.current!.style.transition = SLIDE_DURATION + 'ms';
+        transitionActive(true);
     }, [moved]);
 
     useEffect(()=>{
@@ -140,7 +153,6 @@ function Slider() {
                     color: #686868;
                     transform: scale(1, 2);
                 }
-    
                 &.left {
                     left: 0;
                 }
@@ -164,16 +176,18 @@ function Slider() {
                             space={ITEM_SPACE}
                             onMouseDown={onMouseDown}
                             onMouseMove={onMouseMove}
-                            onMouseUp={dragOver}
-                            onMouseLeave={dragOver}/>
+                            onMouseUp={onDragOver}
+                            onMouseLeave={onDragOver}
+                            onMouseOver={onMouseOver}
+                            onMouseOut={onMouseOut}/>
                     ))}
                 </div>
             </div>
             <div className='btn-box'>
-                <button className='btn-slide left' data-move='left' onClick={onMoveClick}>
+                <button className='btn-slide left' data-move='left' onClick={onMoveButtonClick}>
                     <span>&lt;</span>
                 </button>
-                <button className='btn-slide right' data-move='right' onClick={onMoveClick}>
+                <button className='btn-slide right' data-move='right' onClick={onMoveButtonClick}>
                     <span>&gt;</span>
                 </button>
             </div>
