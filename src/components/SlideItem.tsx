@@ -12,9 +12,22 @@ interface Props {
   onMouseMove: (event: React.MouseEvent)=> void
   onMouseUp: (event: React.MouseEvent)=> void
   onMouseLeave: (event: React.MouseEvent)=> void
+  onMouseOver: (event: React.MouseEvent)=> void
+  onMouseOut: (event: React.MouseEvent)=> void
 }
 
-function SliderItem({item, isFocus, width, space, onMouseDown, onMouseMove, onMouseUp, onMouseLeave}: Props) {
+function SliderItem({
+  item, 
+  isFocus, 
+  width, 
+  space, 
+  onMouseDown, 
+  onMouseMove, 
+  onMouseUp, 
+  onMouseLeave,
+  onMouseOver,
+  onMouseOut
+}: Props) {
 
   const style = css`
     position: relative;
@@ -88,15 +101,16 @@ function SliderItem({item, isFocus, width, space, onMouseDown, onMouseMove, onMo
   `;
 
   return (
-    <div css={style} data-center={isFocus ? 'center' : ''}>
-      <img 
-        src={item.url}
-        alt={item.title}
-        draggable={false}
-        onMouseDown={onMouseDown} 
-        onMouseMove={onMouseMove}
-        onMouseLeave={onMouseLeave}
-        onMouseUp={onMouseUp}/>
+    <div 
+      css={style} 
+      data-center={isFocus ? 'center' : ''}
+      onMouseDown={onMouseDown} 
+      onMouseMove={onMouseMove}
+      onMouseLeave={onMouseLeave}
+      onMouseUp={onMouseUp}
+      onMouseOver={onMouseOver}
+      onMouseOut={onMouseOut}>
+      <img src={item.url} alt={item.title} draggable={false}/>
       <div className='info-box'>
         <div className='title-box'>
           <div className='title'>{item.title}</div>
