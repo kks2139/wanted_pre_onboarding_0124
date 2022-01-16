@@ -40,6 +40,7 @@ function SliderItem({
       width: ${width}px;
       height: 300px;
       border-radius: 5px;
+      object-fit: cover;
       ${!isFocus ? 'filter: brightness(0.5)' : ''};
       cursor: pointer;
     }
@@ -66,7 +67,7 @@ function SliderItem({
         .subtitle {
           padding: 6px 20px 20px 20px;
           font-size: 14px;
-          color: #333333;
+          color: #666666;
           overflow: hidden;
           white-space: nowrap;
           text-overflow: ellipsis;
@@ -78,7 +79,7 @@ function SliderItem({
         a {
           position: relative;
           font-size: 14px;
-          color: #3264fa;
+          color: #3366ff;
           font-weight: bold;
           &::after {
             position: absolute;
@@ -101,12 +102,32 @@ function SliderItem({
     }
 
     @media screen and (max-width: ${screen.wide}){
-    }
-    
-    @media screen and (max-width: ${screen.middle}){
-    }
-    
-    @media screen and (max-width: ${screen.narrow}){
+      flex-direction: column;
+      align-items: center;
+      img {
+        height: 183px;
+      }
+      .info-box {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        position: relative;
+        left: unset;
+        bottom: unset;
+        .title-box {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          font-size: 18px;
+          border-bottom: 0;
+          .subtitle {
+            padding: 0 0 0 10px;
+          }
+        }
+        .link-box {
+          padding: 7px;
+        }
+      }
     }
   `;
 
@@ -127,7 +148,7 @@ function SliderItem({
           <div className='subtitle'>{item.subtitle}</div>
         </div>
         <div className='link-box'>
-          <a href='/' className='link'>바로가기</a>
+          <a href='#' className='link'>바로가기</a>
         </div>
       </div>
     </div>
