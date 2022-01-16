@@ -33,6 +33,7 @@ function Slider() {
         }else{
             setMoved(moved + 1);
         }
+        transitionActive(true);
         canSlide = false;
     }
 
@@ -108,11 +109,12 @@ function Slider() {
 
     const setResizeObserver = ()=>{
         const callback = (entries: ResizeObserverEntry[])=>{
-            transitionActive(false);
             resetInterval();
+            transitionActive(false);
             entries.forEach(entry => {
-                if(window.innerWidth <= 1200) {
-                    setImgWidth(window.innerWidth - 117);
+                const {width} = entry.contentRect;
+                if(width <= 1200) {
+                    setImgWidth(width - 117);
                 }else{
                     setImgWidth(1060);
                 }
