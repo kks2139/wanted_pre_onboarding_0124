@@ -283,7 +283,7 @@ function Header() {
                             <div/>
                         </li>
                         <li className='logo' data-logo onClick={onClickLink}>
-                            <a href='#'>wanted</a>
+                            <a href='/'>wanted</a>
                         </li>
                     </ul>
                 </div>
@@ -291,7 +291,7 @@ function Header() {
                     <ul>
                         {menuLinks.map(link => (
                             <li className={`link ${link.name}`} key={link.text} data-link data-name={link.name} onClick={onClickLink}>
-                                <a href='#'>
+                                <a href='/'>
                                     {link.text}
                                     <span>{link.tag}</span>
                                 </a>
@@ -312,7 +312,7 @@ function Header() {
                             <button className='profile-icon'></button>
                         </li>
                         <li className='wall'>
-                            <a href='#' className='service'>기업 서비스</a>
+                            <a href='/' className='service'>기업 서비스</a>
                         </li>
                     </ul>
                 </div>

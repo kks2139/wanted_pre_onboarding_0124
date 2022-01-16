@@ -148,7 +148,7 @@ function SliderItem({
           <div className='subtitle'>{item.subtitle}</div>
         </div>
         <div className='link-box'>
-          <a href='#' className='link'>바로가기</a>
+          <a href='/' className='link'>바로가기</a>
         </div>
       </div>
     </div>
