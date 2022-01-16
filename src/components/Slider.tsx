@@ -7,7 +7,6 @@ import { useEffect } from 'react';
 import { useRef } from 'react';
 import {screen} from '../datas/style';
 
-const IMG_WIDTH = 1060;
 const ITEM_SPACE = 11;
 const SLIDE_DURATION = 500;
 let canSlide = true;
@@ -17,18 +16,12 @@ let prevTransform = '';
 
 function Slider() {
     const cloneList = useMemo(() => originalList.slice().concat(originalList).concat(originalList), []);
+    const [imgWidth, setImgWidth] = useState(1060);
     const [moved, setMoved] = useState(0);
     const timer = useRef(0);
     const itemsRef = useRef<HTMLDivElement>(null);
     const startIndex = useMemo(()=> Math.floor(cloneList.length / 2), []);
     const focusIndex = startIndex + moved;
-
-    const resetInterval = ()=>{
-        clearInterval(timer.current);
-        timer.current = window.setInterval(()=>{
-            setMoved(pre => pre + 1);
-        }, 4000);
-    }
 
     const onMoveButtonClick = (e: React.MouseEvent<HTMLButtonElement>)=>{
         if(!canSlide) return;
@@ -71,7 +64,7 @@ function Slider() {
         const nowValue = Number(itemsRef.current!.style.transform.split('(')[1].split('px')[0]);
         const moveValue = prevValue - nowValue;
 
-        if(Math.abs(moveValue) > (IMG_WIDTH / 2)){
+        if(Math.abs(moveValue) > (imgWidth / 2)){
             setMoved(pre => moveValue > 0 ? pre + 1 : pre - 1);
         }else{
             itemsRef.current!.style.transform = prevTransform;
@@ -105,13 +98,37 @@ function Slider() {
         }
         canSlide = true;
     }
+
+    const resetInterval = ()=>{
+        clearInterval(timer.current);
+        timer.current = window.setInterval(()=>{
+            setMoved(pre => pre + 1);
+        }, 4000);
+    }
+
+    const setResizeObserver = ()=>{
+        const callback = (entries: ResizeObserverEntry[])=>{
+            transitionActive(false);
+            resetInterval();
+            entries.forEach(entry => {
+                if(window.innerWidth <= 1200) {
+                    setImgWidth(window.innerWidth - 117);
+                }else{
+                    setImgWidth(1060);
+                }
+            });
+        }
+        const observer = new ResizeObserver(callback);
+        observer.observe(document.documentElement);
+    }
     
     useEffect(()=>{
         transitionActive(true);
-    }, [moved]);
+    }, [moved, imgWidth]);
 
     useEffect(()=>{
         resetInterval();
+        setResizeObserver();
         return ()=> {
             clearInterval(timer.current);
         }
@@ -128,7 +145,7 @@ function Slider() {
         .slider-box {
             .items {
                 display: flex;
-                width: ${IMG_WIDTH + ITEM_SPACE * 2}px;
+                width: ${imgWidth + ITEM_SPACE * 2}px;
                 transition: ${SLIDE_DURATION}ms;
             }
         }
@@ -138,6 +155,7 @@ function Slider() {
             left: 50%;
             width: 1210px;
             transform: translateX(-50%);
+
             .btn-slide {
                 z-index: 10;
                 position: absolute;
@@ -164,26 +182,22 @@ function Slider() {
         }
 
         @media screen and (max-width: ${screen.wide}){
-            
-        }
-        
-        @media screen and (max-width: ${screen.middle}){
-        }
-        
-        @media screen and (max-width: ${screen.narrow}){
+            > .btn-box {
+                display: none;
+            }
         }
     `;
 
     return (
         <div css={style}>
             <div className='slider-box' onTransitionEnd={onTransitionEnd}>
-                <div className='items' style={{transform: `translate(${-1 * (IMG_WIDTH + ITEM_SPACE * 2) * (moved + startIndex)}px)`}} ref={itemsRef}>
+                <div className='items' style={{transform: `translate(${-1 * (imgWidth + ITEM_SPACE * 2) * (moved + startIndex)}px)`}} ref={itemsRef}>
                     {cloneList.map((item, i) => (
                         <SlideItem 
                             key={item.url + i}
                             item={item}
                             isFocus={focusIndex === i}
-                            width={IMG_WIDTH}
+                            width={imgWidth}
                             space={ITEM_SPACE}
                             onMouseDown={onMouseDown}
                             onMouseMove={onMouseMove}

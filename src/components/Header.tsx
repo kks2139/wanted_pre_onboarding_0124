@@ -70,7 +70,7 @@ function Header() {
                 }
             }
 
-            .title {
+            .logo {
                 font-size: 22px;
                 font-weight: 600;
                 padding-bottom: 5px;
@@ -208,9 +208,6 @@ function Header() {
                         font-size: 9px;
                     }
                 }
-                svg.search {
-                    margin-left: 30px;
-                }
             }
         }
 
@@ -285,7 +282,7 @@ function Header() {
                             <div/>
                             <div/>
                         </li>
-                        <li className='title' data-logo onClick={onClickLink}>
+                        <li className='logo' data-logo onClick={onClickLink}>
                             <a href='#'>wanted</a>
                         </li>
                     </ul>

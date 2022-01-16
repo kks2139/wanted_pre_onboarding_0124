@@ -12,13 +12,10 @@ function App() {
       padding-top: 25px;
     }
 
-    @media screen and (max-width: ${screen.wide}){
-    }
-    
     @media screen and (max-width: ${screen.middle}){
-    }
-    
-    @media screen and (max-width: ${screen.narrow}){
+      main {
+        margin-top: 105px;
+      }
     }
   `;
 
@@ -26,7 +23,7 @@ function App() {
     <div css={style}>
       <Header/>
       <main>
-        {/* <Slider/> */}
+        <Slider/>
       </main>
     </div>
   );
