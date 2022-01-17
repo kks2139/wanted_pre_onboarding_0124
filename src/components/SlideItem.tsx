@@ -129,6 +129,22 @@ function SliderItem({
         }
       }
     }
+
+    @media screen and (max-width: ${screen.narrow}){
+      .info-box {
+        width: ${width}px;
+        .title-box {
+          .title, .subtitle {
+            text-align: center;
+
+            width: ${width}px;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+          }
+        }
+      }
+    }
   `;
 
   return (
